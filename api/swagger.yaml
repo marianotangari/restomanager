@@ -1,0 +1,540 @@
+swagger: "2.0"
+info:
+  description: "Este documento contiene la especificación para acceder y utilizar la API de Delilah-Restó."
+  version: "1.0.0"
+  title: "Restó Manager"
+  contact:
+    email: "mariano_tangari@hotmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "https://github.com/marianotangari/restomanager"
+tags:
+  - name: "usuarios"
+    description: "Operaciones del usuario: registro, login y cambios"
+  - name: "productos"
+    description: "Contiene los productos disponibles del restaurante"
+  - name: "ordenes"
+    description: "Acceso a las ordenes del restaurante"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /users:
+    get:
+      tags:
+        - "usuarios"
+      summary: "Devuelve la lista de usuarios (solo admin)"
+      description: "Devuelve la lista de todos los usuarios registrados"
+      operationId: "getUsers"
+      produces:
+        - "application/json"
+      parameters: 
+        - in: "header"
+          name: "autorización"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Operación exitosa"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/usuarios"
+        403:
+          description: "No tiene los permisos necesarios"
+  
+  /users/register:  
+    post:
+      tags:
+        - "usuarios"
+      summary: "Registra un nuevo usuario"
+      operationId: "createUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Objeto para registrar usuario"
+          required: true
+          schema:
+            $ref: "#/definitions/user_registro"
+      responses:
+        201:
+          description: "Ok"
+        400:
+          description: "Nombre de usuario ya en uso"
+        409:
+          description: "Parámetros incorrectos o faltantes"
+  
+  /users/login:
+    post:
+      tags:
+        - "usuarios"
+      summary: "Loguea un usuario"
+      description: ""
+      operationId: "loginUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "credentials"
+          in: "body"
+          description: "El nombre de usuario y contraseña para loguearse"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              userName:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        200:
+          description: "Usuario logueado ok"
+          schema:
+            type: "string"
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        400:
+          description: "Usuario no existente"
+
+  /products:
+    get:
+      tags:
+        - "productos"
+      summary: "Lista de productos"
+      description: "Devuelve la lista de todos los platos"
+      operationId: "getProducts"
+      produces:
+        - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Operación exitosa"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/producto_almacenado"
+  
+    post:
+      tags:
+        - "productos"
+      summary: "Añadir un nuevo producto(admin)"
+      operationId: "postProduct"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Objeto de producto para almacenar"
+          required: true
+          schema:
+            $ref: "#/definitions/producto_subido"
+      responses:
+        201:
+          description: "Producto creado"
+        400:
+          description: "El producto debe tener un precio y nombre"
+  
+  
+  /products/{:id}:
+    put:
+      tags:
+        - "productos"
+      summary: "Actualizar un producto"
+      description: "Cambiar campos del producto"
+      operationId: "putProduct"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ":id"
+          in: "path"
+          description: "ID del producto"
+          required: true
+          type: "integer"
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Campos del producto que se actualizarán"
+          required: true
+          schema:
+            $ref: "#/definitions/producto_subido"
+      responses:
+        200:
+          description: "Producto modificado exitosamente"
+        403:
+          description: "No tiene los permisos necesarios"
+        404:
+          description: "Producto no encontrado"
+
+    delete:
+      tags:
+        - "productos"
+      summary: "Borrar un producto"
+      description: ""
+      operationId: "deleteProduct"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ":id"
+          in: "path"
+          description: "Id del producto que se borrará"
+          required: true
+          type: "integer"
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Producto eliminado"
+        403:
+          description: "No tiene los permisos necesarios"
+        404:
+          description: "Producto no encontrado"
+
+  /orders:
+    get:
+      tags:
+        - "ordenes"
+      summary: "Devuelve la lista de ordenes"
+      description: "Homepage del admin"
+      operationId: "getOrders"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ordenes_listado"
+        403:
+          description: "No tiene los permisos necesarios"
+
+    post:
+      tags:
+        - "ordenes"
+      summary: "Enviar una orden"
+      description: "Hacer un pedido"
+      operationId: "postOrder"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Orden que se añadirá"
+          required: true
+          schema:
+            $ref: "#/definitions/orden_enviada"
+      responses:
+        201:
+          description: "Ok"
+        400:
+          description: "Producto/s no encontrado/s"
+        404:
+          description: "Operación inválida, usuario no registrado"
+
+    put:
+      tags:
+        - "ordenes"
+      summary: "Actualizar el estado de una orden"
+      description: "Cambiar el estado de un pedido. Los diferentes estados son: ['new', 'confirmed', 'preparing', 'sending', 'delivered', 'canceled'];"
+      operationId: "putOrder"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Actualización del estado"
+          required: true
+          schema:
+            $ref: "#/definitions/orden_status"
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "Error al actualizar el estado de la orden"    
+        403:
+          description: "No tiene los permisos necesarios"
+
+    delete:
+      tags:
+        - "ordenes"
+      summary: "Elimina una orden"
+      description: "Elimina una orden(admin)"
+      operationId: "deleteOrder"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "order_id"
+          description: "Id de la orden que se eliminará"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              order_id:
+                type: "number"
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "Error al eliminar la orden"
+        403:
+          description: "No tiene los permisos necesarios"
+        500:
+          description: "Token inválido"
+        
+  
+  /orders/{:id}:
+    get:
+      tags:
+        - "ordenes"
+      summary: "Devuelve el detalle de una orden específica"
+      description: "Homepage del admin"
+      operationId: "getOrder"
+      produces:
+        - "application/json"
+      parameters:
+        - name: ":id"
+          in: "path"
+          description: "ID del producto"
+          required: true
+          type: "integer"
+        - in: "header"
+          name: "authorization"
+          description: "Token de autenticación"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/orden_completa"
+        403:
+          description: "No tiene los permisos necesarios"
+  
+  
+definitions:
+  orden_enviada:
+    type: "object"
+    properties:
+      user_id:
+        type: "number"
+      products:
+        type: "array"
+        items:
+          $ref: "#/definitions/item_seleccionado"
+      pago:
+        type: "number"
+        description: "pago en efectivo(0) o con tarjeta(1)"
+
+
+  ordenes_listado:
+    type: "object"
+    properties:
+      order_id:
+        type: "number"
+      estado:
+        type: "string"
+        enum:
+          - "new"
+          - "confirmed"
+          - "preparing"
+          - "delivering"
+          - "delivered"
+      hora:
+        type: "string"
+        example: "15:34:02"
+      descripcion:
+        type: "string"
+        example: "1xBagel1xHamburguesa"
+      monto:
+        type: "number"
+      pago:
+        type: "number"
+        description: "pago en efectivo(0) o con tarjeta(1)"
+      user_id:
+        type: "number"
+
+  
+  orden_completa:
+    type: "object"
+    properties:
+      usuario: 
+        type: "string"
+      direccion:
+        type: "string"
+      mail: 
+        type: "string"
+      telefono: 
+        type: "string"
+      monto_total: 
+        type: "integer"
+      estado:
+        type: "string"
+        enum:
+          - "new"
+          - "confirmed"
+          - "preparing"
+          - "delivering"
+          - "delivered"
+      productos:
+        type: "array"
+        items:
+          $ref: "#/definitions/producto_detalle"
+        
+  item_seleccionado:
+    type: "object"
+    properties:
+      product_id:
+        type: "number"
+      quantity:
+        type: "number"
+
+  user_registro:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      name:
+        type: "string"
+      mail:
+        type: "string"  
+      phone:
+        type: "string"
+      adress:
+        type: "string"
+      password:
+        type: "string"
+      is_admin:
+        type: "integer"
+        minimum: 0
+        maximum: 1
+
+  usuarios:
+    type: "object"
+    properties:
+      user_id:
+        type: "number"
+      usuario:
+        type: "string"
+      nombre_apellido:
+        type: "string"
+      email:
+        type: "string"
+      contrasena:
+        type: "string"
+      telefono:
+        type: "string"
+      direccion:
+        type: "string"
+      is_admin:
+        type: "integer"
+        minimum: 0
+        maximum: 1
+
+  orden_status:
+    type: "object"
+    properties:
+      Status:
+        type: "string"
+        description: "order status in the store"
+        enum:
+          - "new"
+          - "confirmed"
+          - "preparing"
+          - "delivering"
+          - "delivered"
+      order_id: 
+        type: "integer"
+
+  producto_almacenado:
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        format: "int64"
+      product_name:
+        type: "string"
+        example: "Hamburguesa clásica"
+      product_price:
+        type: "number"
+      img_url:
+        type: "string"
+
+  producto_subido:
+    type: "object"
+    required:
+      - "product_name"
+      - "img_url"
+      - "product_price"
+      - "description"
+    properties:
+      product_name:
+        type: "string"
+        example: "Bagel de salmón"
+      img_url:
+        type: "string"
+      product_price:
+        type: "number"
+      description:
+        type: "string"
+  producto_detalle:
+    type: "object"
+    properties: 
+      product_id:
+        type: "integer"
+      product_name: 
+        type: "string"
+      product_price:
+        type: "integer"
+      img_url: 
+        type: "string"
+      description: 
+        type: "string"
+      order_products_id:
+        type: "integer"
+      order_id: 
+        type: "integer"
+      cantidad_productos: 
+        type: "integer"
+      

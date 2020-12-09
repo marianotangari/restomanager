@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "052d321b-971c-40be-a4fd-41404ca6c433",
+		"name": "Delilah Resto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\" : \"feder\",\r\n    \"password\" : \"piano\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postProducts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImZlZGVyIiwicGFzc3dvcmQiOiJwaWFubyIsImlhdCI6MTU5NjE1NDU0M30.ZfJs-svRSl-yWatH5zenZPrbrbkoKQIGEqtx_Gnit5w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_name\" : \"Bagel de salmon\",\r\n    \"product_price\" : 425,\r\n    \"img_url\" : \"url\",\r\n    \"description\" : \"bagel\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/products",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProducts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteProduct",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Ik1hcmlhbjgiLCJwYXNzd29yZCI6ImtsYXZpZXIiLCJpYXQiOjE1OTYxNTI0MjR9.DVCXRN9XE3FMDvsg3ohraaG3qYo2jbYUvlBknrhHi6g",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/products/197",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"197"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"userName\": \"Marian\",\r\n\t\"name\": \"Mariano\",\r\n\t\"mail\": \"marian.com\",\r\n\t\"phone\": \"12382456\",\r\n\t\"adress\": \"Ameghino134\",\r\n\t\"password\": \"klavier\",\r\n\t\"is_admin\": 0\t\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/users/register",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "putProduct",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImZlZGVyIiwicGFzc3dvcmQiOiJwaWFubyIsImlhdCI6MTU5NjE1NDU0M30.ZfJs-svRSl-yWatH5zenZPrbrbkoKQIGEqtx_Gnit5w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"product_name\" : \"Bagel de salmon ahumado\",\r\n    \"product_price\" : \"600\",\r\n    \"img_url\" : \"url\",\r\n    \"description\" : \"bagel\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/products/20",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"user_id\": 24,\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 20,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"product_id\": 21,\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"pago\": \"hola\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "putOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteOrder",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOrders",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOrder",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "\neyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6ImZlZGVyIiwicGFzc3dvcmQiOiJwaWFubyIsImlhdCI6MTU5NjE1NDU0M30.ZfJs-svRSl-yWatH5zenZPrbrbkoKQIGEqtx_Gnit5w\n",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:5000/orders/7",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
